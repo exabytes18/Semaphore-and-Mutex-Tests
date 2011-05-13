@@ -18,9 +18,10 @@ void* worker_thread(void* ptr) {
 	}
 }
 
-// One iteration is actually 4 mutex operations. We're only interested in
-// direct contention between two threads. Thus, the program will utilize at
-// most 2 cores.
+/*
+ * We're only interested in contention between 2 threads. Thus, the program
+ * will utilize at most 2 cores.
+ */
 void perform_mutex_test(int num_iterations, pthread_mutex_t* mutex) {
 	ctx* c = malloc(sizeof(c[0]));
 	c->num_iterations = num_iterations;
@@ -44,7 +45,6 @@ void mutex_test(int num_iterations) {
 	free(mutex);
 }
 
-// Note, MutexTest and SemTest are not directly comparable.
 int main(int argc, char** argv) {
 	int num_iterations = 1000000;
 
@@ -58,9 +58,8 @@ int main(int argc, char** argv) {
 	time_t elapsed_time_us = end.tv_usec - start.tv_usec;
 	elapsed_time_us += 1000000l * (end.tv_sec - start.tv_sec);
 	double elapsed_time = (double)(elapsed_time_us / 1000000.);
-	double ops_per_sec = 4 * (double)num_iterations / elapsed_time;
 
-	printf("%d iterations took %.3fs - %.0f operations/sec\n", num_iterations, elapsed_time, ops_per_sec);
+	printf("%d iterations took %.3fs\n", num_iterations, elapsed_time);
 
 	return 0;
 }

@@ -5,7 +5,7 @@ FLAGS=-lrt -pthread -O3
 BINDIR=bin
 SRCDIR=src
 
-all: SemTest MutexTest
+all: SemTest MutexTest ContextSwitchTest
 
 $(BINDIR):
 	mkdir -p $(BINDIR)
@@ -25,4 +25,12 @@ $(BINDIR)/MutexTest: $(BINDIR)/MutexTest.o
 
 $(BINDIR)/MutexTest.o: $(SRCDIR)/MutexTest.c
 	$(CC) $(INC) $(FLAGS) -c $(SRCDIR)/MutexTest.c -o $(BINDIR)/MutexTest.o
+
+ContextSwitchTest: $(BINDIR) $(BINDIR)/ContextSwitchTest
+
+$(BINDIR)/ContextSwitchTest: $(BINDIR)/ContextSwitchTest.o 
+	$(CC) $(INC) $(FLAGS) $(BINDIR)/ContextSwitchTest.o -o $(BINDIR)/ContextSwitchTest
+
+$(BINDIR)/ContextSwitchTest.o: $(SRCDIR)/ContextSwitchTest.c
+	$(CC) $(INC) $(FLAGS) -c $(SRCDIR)/ContextSwitchTest.c -o $(BINDIR)/ContextSwitchTest.o
 
